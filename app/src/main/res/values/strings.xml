@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">countries_app</string>
+    <string name="btn_open_browseCountriesActivity">BROWSE COUNTRIES</string>
 </resources>
