@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 // db entities
-@Database(entities = {CountryData.class}, version = 1, exportSchema = false)
+@Database(entities = {Country.class}, version = 1, exportSchema = false)
 public abstract class RoomDB extends RoomDatabase {
     // Db instance
     private static RoomDB database;

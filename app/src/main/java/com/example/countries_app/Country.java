@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 //Table name
 @Entity(tableName = "countries")
-public class CountryData implements Serializable {
+public class Country implements Serializable {
     // Id column
     @PrimaryKey(autoGenerate = true)
     private int ID;

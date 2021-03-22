@@ -13,15 +13,16 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface CountryDAO {
     // query
     @Insert(onConflict = REPLACE)
-    void insert(CountryData countryData);
+    void insert(Country country);
 
     //Delete query
     @Delete
-    void delete(CountryData countryData);
+    void delete(Country country);
 
     //Delete all
-    @Delete
-    void reset(List<CountryData> countryData);
+    @Query("DELETE FROM countries")
+    void deleteTable();
+
 
     //Update
     @Query("UPDATE countries SET name = :sName WHERE ID = :sID")
@@ -29,6 +30,14 @@ public interface CountryDAO {
 
     //Get all data
     @Query("SELECT * FROM countries")
-    List<CountryData> getAll();
+    List<Country> getAll();
+
+    //Get names
+    @Query("SELECT name FROM countries")
+    List<String> getAllNames();
+
+    //Table size
+    @Query("SELECT count(*) FROM countries")
+    int tableSize();
 
 }

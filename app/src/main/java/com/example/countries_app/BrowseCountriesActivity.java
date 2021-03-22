@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,14 +23,15 @@ public class BrowseCountriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_countries);
 
         database = RoomDB.getInstance(this);
-        List<CountryData> countries = database.countryDAO().getAll();
-        Log.v("cdbrowse", countries.get(0).getName());
-
+        List<String> countryNames = database.countryDAO().getAllNames();
+        Log.v("name", String.valueOf(countryNames.size()));
         mCountriesList = (RecyclerView) findViewById(R.id.rv_country_names);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mCountriesList.setLayoutManager(layoutManager);
-        String[] names = {"cfoo", "woo", countries.get(0).getName()}; // will be loaded from local storage later
-        mAdapter = new NameAdapter(names);
+        String[] names = {"cfoo", "woo"}; // will be loaded from local storage later
+        Log.v("names", countryNames.toString());
+        Log.v("names2", names.toString());
+        mAdapter = new NameAdapter(countryNames);
         mCountriesList.setAdapter(mAdapter);
 
     }
