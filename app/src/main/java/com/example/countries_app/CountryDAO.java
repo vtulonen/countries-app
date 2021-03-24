@@ -36,6 +36,14 @@ public interface CountryDAO {
     @Query("SELECT name FROM countries")
     List<String> getAllNames();
 
+    //Get specific country by name
+    @Query("SELECT * from countries WHERE name = :sName")
+    Country getOne(String sName);
+
+
+    @Query("SELECT capital from countries")
+    List<String> getcap();
+
     //Table size
     @Query("SELECT count(*) FROM countries")
     int tableSize();

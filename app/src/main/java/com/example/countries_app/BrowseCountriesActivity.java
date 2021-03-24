@@ -23,14 +23,16 @@ public class BrowseCountriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_countries);
 
         database = RoomDB.getInstance(this);
+
         List<String> countryNames = database.countryDAO().getAllNames();
-        Log.v("name", String.valueOf(countryNames.size()));
+        Log.v("names", countryNames.toString());
+        Country testcountry = database.countryDAO().getOne("Namibia");
+        Log.v("testcountry", String.valueOf(testcountry.getPopulation()));
+
+
         mCountriesList = (RecyclerView) findViewById(R.id.rv_country_names);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mCountriesList.setLayoutManager(layoutManager);
-        String[] names = {"cfoo", "woo"}; // will be loaded from local storage later
-        Log.v("names", countryNames.toString());
-        Log.v("names2", names.toString());
         mAdapter = new NameAdapter(countryNames);
         mCountriesList.setAdapter(mAdapter);
 

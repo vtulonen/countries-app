@@ -13,6 +13,7 @@ import com.example.countries_app.utilities.MyRequestQueue;
 import com.example.countries_app.utilities.NetworkUtility;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         database = RoomDB.getInstance(this);
-
+        database.countryDAO().deleteTable();
+        Log.v("ts", String.valueOf(database.countryDAO().tableSize()));
         // Query api and populate db if db does not exist yet
         if (database.countryDAO().tableSize() == 0) {
             makeRestCountriesQuery(); // TODO: make this query timed? to check if data has changed
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeRestCountriesQuery() {
         Log.v("click", "clicked");
-        String[] fields = {"name", "capital"};
+        String[] fields = {"name", "capital", "nativeName", "region", "subregion", "currencies", "languages", "population"};
         URL url =  NetworkUtility.buildUrl("all", fields);
         Log.v("url", url.toString());
         parseQuery(url.toString());
@@ -57,8 +59,28 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject countryObj = response.getJSONObject(i);
                             String name = countryObj.getString("name");
+                            String capital = countryObj.getString("capital");
+                            String nativeName = countryObj.getString("nativeName");
+                            String region = countryObj.getString("region");
+                            String subregion = countryObj.getString("subregion");
+                            int population = countryObj.getInt("population");
+
+
+                            JSONArray currenciesArr = countryObj.getJSONArray("currencies");
+                            List<String> currencies = new ArrayList<String>();
+                            for (int j = 0; j < currenciesArr.length(); j++) {
+                                JSONObject curObj = currenciesArr.getJSONObject(j);
+                                currencies.add(curObj.getString("name"));
+                            }
+
                             Country country = new Country();
                             country.setName(name);
+                            country.setNativeName(nativeName);
+                            country.setSubregion(subregion);
+                            country.setRegion(region);
+                            country.setCurrencies(currencies);
+                            country.setCapital(capital);
+                            country.setPopulation(population);
 
                             // Inset country to db
                             database.countryDAO().insert(country);
