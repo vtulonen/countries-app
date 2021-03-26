@@ -65,10 +65,6 @@ public class Country implements Serializable {
         this.name = name;
     }
 
-    public String display() {
-        return name;
-    }
-
     public String getNativeName() {
         return nativeName;
     }

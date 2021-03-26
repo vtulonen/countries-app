@@ -1,14 +1,11 @@
 package com.example.countries_app.utilities;
 
-import android.content.Context;
 import android.net.Uri;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.xml.transform.ErrorListener;
 
 public class NetworkUtility {
     final static String RESTCOUNTRIES_BASE_URL = "https://restcountries.eu/rest/v2";
@@ -42,6 +39,8 @@ public class NetworkUtility {
 
         return url;
     }
+
+
 }
 
 

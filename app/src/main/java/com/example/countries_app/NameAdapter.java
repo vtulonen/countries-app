@@ -15,12 +15,21 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
 
     private List<String> names;
 
-    public NameAdapter(List<String> names) { this.names = names;}
+    final private ListItemClickListener mOnClickListener;
+
+    public interface ListItemClickListener {
+        void onListItemClick(String clickedItemIndex);
+
+    }
+
+    public NameAdapter(List<String> names, ListItemClickListener listener) {
+        this.names = names;
+        mOnClickListener = listener;
+    }
 
 
     @Override
     public CountryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Log.v("namesize", String.valueOf(names.size()));
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.country_name_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -33,7 +42,6 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
 
     @Override
     public void onBindViewHolder(CountryNameViewHolder holder, int position) {
-        Log.v("pos", String.valueOf(position));
         holder.bind(names.get(position));
     }
 
@@ -43,7 +51,7 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         return names.size();
     }
 
-    class CountryNameViewHolder extends RecyclerView.ViewHolder {
+    class CountryNameViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         // Will display the position in the list, ie 0 through getItemCount() - 1
         TextView listCountryNameView;
@@ -52,11 +60,25 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
             super(itemView);
 
             listCountryNameView = (TextView) itemView.findViewById(R.id.tv_item_countryName);
+            itemView.setOnClickListener(this);
         }
 
 
         void bind(String name) {
             listCountryNameView.setText(name);
         }
+
+        @Override
+        public void onClick(View view) {
+            // pos not needed?
+            int clickedPos = getAdapterPosition();
+            String clickedCountryName = String.valueOf(listCountryNameView.getText());
+
+            Log.v("tw", String.valueOf(listCountryNameView.getText()));
+
+            mOnClickListener.onListItemClick(clickedCountryName);
+        }
     }
+
+
 }

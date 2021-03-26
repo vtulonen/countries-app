@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         database = RoomDB.getInstance(this);
-        database.countryDAO().deleteTable();
+
         Log.v("ts", String.valueOf(database.countryDAO().tableSize()));
         // Query api and populate db if db does not exist yet
         if (database.countryDAO().tableSize() == 0) {
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeRestCountriesQuery() {
         Log.v("click", "clicked");
-        String[] fields = {"name", "capital", "nativeName", "region", "subregion", "currencies", "languages", "population"};
+        String[] fields = {}; // empty for all fields
         URL url =  NetworkUtility.buildUrl("all", fields);
         Log.v("url", url.toString());
         parseQuery(url.toString());
@@ -63,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
                             String nativeName = countryObj.getString("nativeName");
                             String region = countryObj.getString("region");
                             String subregion = countryObj.getString("subregion");
+                            String flagUrl = countryObj.getString("flag");
                             int population = countryObj.getInt("population");
-
+                            Log.v("countryname", name);
 
                             JSONArray currenciesArr = countryObj.getJSONArray("currencies");
                             List<String> currencies = new ArrayList<String>();
@@ -81,10 +82,13 @@ public class MainActivity extends AppCompatActivity {
                             country.setCurrencies(currencies);
                             country.setCapital(capital);
                             country.setPopulation(population);
+                            country.setFlagUrl(flagUrl);
 
                             // Inset country to db
                             database.countryDAO().insert(country);
+
                         }
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
