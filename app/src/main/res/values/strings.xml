@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">countries_app</string>
+    <string name="app_name">Countries</string>
+    <string name="main_title"><u>Countries of the World</u></string>
     <string name="btn_open_browseCountriesActivity">BROWSE COUNTRIES</string>
+    <string name="iv_flag_content_description">Flag of the country</string>
+    <string name="label_tv_capital">Capital</string>
+    <string name="label_tv_region">Region</string>
+    <string name="label_tv_population">Population</string>
+    <string name="label_tv_nativeName">Native name</string>
+    <string name="label_tv_currencies">Currencies</string>
+    <string name="button_quiz">TAKE A QUIZ</string>
 </resources>

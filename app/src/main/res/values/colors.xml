@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="flax">#E1CE7A</color>
+    <color name="lemon">#FBFFB9</color>
+    <color name="chromeyellow">#F9A410</color>
+    <color name="terracotta">#EC7357</color>
+    <color name="liver">#754F44</color>
+    <color name="ivory">#FEFFEB</color>
+    <color name="yellowred">#FAC975</color>
+    <color name="orangepeel">#EF9906</color>
+    <!-- Buttons -->
+    <color name="button_primary_bg">@color/liver</color>
+    <color name="button_primary_text">@color/ivory</color>
+
+    <color name="main_bg">#E8DCD9</color>
+
 </resources>

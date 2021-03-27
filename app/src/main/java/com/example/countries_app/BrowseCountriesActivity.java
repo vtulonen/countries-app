@@ -21,6 +21,7 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
     RoomDB database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Browse Countries");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_countries);
 

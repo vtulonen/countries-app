@@ -23,8 +23,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Country> dataList = new ArrayList<>();
     RoomDB database;
+
+    // TODO: on swipe open next country? -viewcountry activity
+    // TODO: styles - all
+    // TODO: search countries? - browse activity
+    // TODO: capital quiz
+    // TODO: landscape mode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

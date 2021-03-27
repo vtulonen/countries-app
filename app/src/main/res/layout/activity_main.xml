@@ -6,14 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_title"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOpenBrowseCountries"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.576" />
+
     <Button
         android:id="@+id/buttonOpenBrowseCountries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/button_primary_bg"
         android:onClick="openBrowseCountries"
         android:text="@string/btn_open_browseCountriesActivity"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/button_primary_text"
+        app:cornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.423" />
+
+    <Button
+        android:id="@+id/buttonOpenQuizActivity"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/button_primary_bg"
+        android:fontFamily="monospace"
+        android:text="@string/button_quiz"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/button_primary_text"
+        app:cornerRadius="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenBrowseCountries"
+        app:layout_constraintVertical_bias="0.167" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
