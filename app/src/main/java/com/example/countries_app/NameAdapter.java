@@ -5,15 +5,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameViewHolder> {
+public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameViewHolder> implements Filterable {
 
     private List<String> names;
+    private final List<String> allNames;
 
     final private ListItemClickListener mOnClickListener;
 
@@ -23,7 +27,8 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
     }
 
     public NameAdapter(List<String> names, ListItemClickListener listener) {
-        this.names = names;
+        this.names = new ArrayList<>(names);
+        this.allNames = new ArrayList<>(names); //
         mOnClickListener = listener;
     }
 
@@ -79,6 +84,39 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
             mOnClickListener.onListItemClick(clickedCountryName);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return searchFilter;
+    }
+
+    private Filter searchFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<String> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(allNames);
+            } else {
+                // regex string to match everything starting with the constraint
+                String searchRegex = constraint.toString().toLowerCase().trim() + "(.*)";
+                for (String name : allNames) {
+                    if (name.toLowerCase().matches(searchRegex)) {
+                        filteredList.add(name);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            names.clear();
+            names.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
 }

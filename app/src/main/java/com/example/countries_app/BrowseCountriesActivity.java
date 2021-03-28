@@ -4,53 +4,107 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
 public class BrowseCountriesActivity extends AppCompatActivity implements NameAdapter.ListItemClickListener {
 
-    RecyclerView mCountriesList;
+    RecyclerView mCountries;
     NameAdapter mAdapter;
-    private Toast mToast;
+    List<String> mCountryNameList;
+
     private static final String TAG = "BrowseCountriesActivity";
     RoomDB database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Browse Countries");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_countries);
 
         database = RoomDB.getInstance(this);
 
-        List<String> countryNames = database.countryDAO().getAllNames();
+        mCountryNameList = database.countryDAO().getAllNames();
 
-        mCountriesList = (RecyclerView) findViewById(R.id.rv_country_names);
+        mCountries = (RecyclerView) findViewById(R.id.rv_country_names);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mCountriesList.setLayoutManager(layoutManager);
-        mAdapter = new NameAdapter(countryNames, this);
-        mCountriesList.setAdapter(mAdapter);
+        mCountries.setLayoutManager(layoutManager);
+        mAdapter = new NameAdapter(mCountryNameList, this);
+        mCountries.setAdapter(mAdapter);
 
     }
 
     @Override
     public void onListItemClick(String clickedItemText) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        Log.v("click", "testclick");
-
-        String toastMessage = "Clicked item: " + clickedItemText;
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-        mToast.show();
-
         Intent i = new Intent(this, ViewCountryActivity.class);
         i.putExtra("countryName", clickedItemText);
         startActivity(i);
     }
 
+    /**
+     *
+     *  Create searchView in toolbar to filter countries
+     *
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inf = getMenuInflater();
+        inf.inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchView sw = (SearchView) searchItem.getActionView();
+        sw.setImeOptions(EditorInfo.IME_ACTION_DONE); // search icon to done icon
+        sw.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI); // prevent landscape layout to take full height of the screen
+        sw.setIconifiedByDefault(false); // added to guarantee searchView expanding on click
+        sw.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        // Added handler to set focus on searchView after clicking
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                new Handler(Looper.myLooper()).post(() -> {
+                    sw.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(sw.findFocus(), 0);
+                });
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                return true;
+            }
+        });
+
+        return true;
+    }
 }

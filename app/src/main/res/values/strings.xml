@@ -9,4 +9,6 @@
     <string name="label_tv_nativeName">Native name</string>
     <string name="label_tv_currencies">Currencies</string>
     <string name="button_quiz">TAKE A QUIZ</string>
+    <string name="search_menu_title">Search</string>
+    <string name="browse_title">Browse Countries</string>
 </resources>
