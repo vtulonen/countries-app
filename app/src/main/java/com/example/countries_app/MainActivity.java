@@ -1,11 +1,18 @@
 package com.example.countries_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import android.app.PendingIntent;
 
 import android.content.Intent;
+
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
+
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -19,6 +26,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: on swipe open next country? -viewcountry activity
     // TODO: styles - all
-    // TODO: search countries? - browse activity
     // TODO: capital quiz
-    // TODO: landscape mode
+    Calendar mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +49,35 @@ public class MainActivity extends AppCompatActivity {
         if (database.countryDAO().tableSize() == 0) {
             makeRestCountriesQuery(); // TODO: make this query timed? to check if data has changed
         }
+        sendFactNotification();
+    }
+
+    public void sendFactNotification() {
+        Country randomCountry = database.countryDAO().getRandom();
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, i, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "daily_fact")
+                .setSmallIcon(R.drawable.ic_search_icon)
+                .setContentTitle("Daily Country Fact:")
+                .setContentText(randomCountry.getName() + "'s capital is " + randomCountry.getCapital() + ". Click for more!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+          notificationManager.notify(1, builder.build());
     }
 
     public void openBrowseCountries(View view) {
         Intent i = new Intent(this, BrowseCountriesActivity.class);
+        this.startActivity(i);
+    }
+
+    public void openQuizSettings(View view) {
+        Intent i = new Intent(this, QuizSettingsActivity.class);
         this.startActivity(i);
     }
 
@@ -103,4 +135,5 @@ public class MainActivity extends AppCompatActivity {
         });
         MyRequestQueue.getInstance(this).addToRequestQueue(request);
     }
+
 }
