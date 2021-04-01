@@ -1,52 +1,147 @@
 package com.example.countries_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
-    RoomDB database;
+
     ArrayList<String> mRegions;
     final int MAX_REGIONS = 5;
+    int mQnum;
+    TextView tw_question_value;
+    List<Button> buttons;
+    Quiz quiz;
+    Button nextBtn;
+    final int AMOUNT_OF_QUESTIONS = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        database = RoomDB.getInstance(this);
+        final int[] OPTION_BUTTON_IDS = {
+                R.id.btn_option_1,
+                R.id.btn_option_2,
+                R.id.btn_option_3,
+                R.id.btn_option_4,
+        };
+
+        buttons = new ArrayList<Button>();
+        for (int id : OPTION_BUTTON_IDS) {
+            Button btn = (Button) findViewById(id);
+            buttons.add(btn);
+        }
+
+        nextBtn = findViewById(R.id.btn_next);
+
         mRegions = getIntent().getExtras().getStringArrayList("regions");
+        // fill mRegions with placeholder text for database query to work
         while (mRegions.size() < MAX_REGIONS) {
             mRegions.add("placeholder");
         }
 
-        Log.v("reg", mRegions.toString());
-        TextView tw = findViewById(R.id.tw_question);
-        tw.setText(mRegions.toString());
-        generateQuestion();
-        generateQuestion();
-        generateQuestion();
-        generateQuestion();
+        tw_question_value = findViewById(R.id.tw_question_value);
+
+        quiz = new Quiz(this, AMOUNT_OF_QUESTIONS, mRegions);
+        nextBtn.performClick();
+
     }
 
-    public void generateQuestion() {
-        ArrayList<Country> options = new ArrayList<Country>();
+    public void displayQuestion(View view) {
 
-        while (options.size() < 4) {
-            Country randomCountry = database.countryDAO()
-                    .getRandom(mRegions.get(0), mRegions.get(1), mRegions.get(2), mRegions.get(3), mRegions.get(4));
-            if (!options.contains(randomCountry)) {
-                options.add(randomCountry);
+        if (quiz.isGameOver()) {
+            Log.v("game", "gameover, your score: " + quiz.getScore() + " / " + AMOUNT_OF_QUESTIONS);
+            ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.container);
+            //Hide all views in layout
+            for (int i = 0; i < layout.getChildCount(); i++) {
+                View child = layout.getChildAt(i);
+                child.setVisibility(View.INVISIBLE);
+            }
+
+            // Display end of quiz textview and buttons
+            TextView twEndMessage = findViewById(R.id.tw_end_of_quiz_message);
+            String endMessage = "You scored " + quiz.getScore() + "/" + AMOUNT_OF_QUESTIONS;
+            twEndMessage.setText(endMessage);
+            twEndMessage.setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_retry).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_back_to_menu).setVisibility(View.VISIBLE);
+
+
+        } else {
+            mQnum = quiz.getCurrentQuestionPos();
+            List<String> options = quiz.questions.get(mQnum).getOptions();
+            tw_question_value.setText(quiz.questions.get(mQnum).getAskedName());
+            for (int i=0; i<buttons.size(); i++) {
+                buttons.get(i).setText(options.get(i));
+                buttons.get(i).setEnabled(true); // reset back
+                buttons.get(i).setBackgroundColor(getResources().getColor(R.color.orangepeel, null)); // reset
+            }
+
+            nextBtn.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    // User guess
+    public void onOptionButtonClick(View view) {
+        Button clickedBtn = (Button) view;
+        String btnText = clickedBtn.getText().toString();
+        boolean isCorrect = checkAnswer(btnText);
+
+        //Disable option buttons
+        for (int i=0; i<buttons.size(); i++) {
+            buttons.get(i).setEnabled(false);
+            if (buttons.get(i).getText() == quiz.questions.get(mQnum).getAskedCapital()) {
+                buttons.get(i).setBackgroundColor(getResources().getColor(R.color.button_correct, null));
             }
         }
 
-        Question question = new Question(options);
-        Log.e("question", "asnwer: " + question.getAnswer().getCapital());
-       // Log.e("question", question.getOptions().toString());
+        if (isCorrect) {
+            quiz.increaseScore();
+            clickedBtn.setBackgroundColor(getResources().getColor(R.color.button_correct, null));
+        } else {
+            clickedBtn.setBackgroundColor(getResources().getColor(R.color.button_wrong, null ));
+        }
 
+        quiz.increaseCurrentQuestionPos();
 
+        //Show 'next' button
+        nextBtn.setVisibility(View.VISIBLE);
+
+        //Waiting user to press next to go continue
     }
+
+    public void onMenuBtnClick(View view) {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
+
+    public void onNewBtnClick(View view) {
+        onBackPressed();
+    }
+
+    public boolean checkAnswer(String answer) {
+        return answer == quiz.questions.get(mQnum).getAskedCapital();
+    }
+
+    public void resetButtons() {
+        for (int i=0; i<buttons.size(); i++) {
+            buttons.get(i).setEnabled(true);
+            buttons.get(i).setBackgroundColor(getResources().getColor(R.color.orangepeel, null));
+        }
+
+        nextBtn.setVisibility(View.VISIBLE);
+    }
+
 
 }

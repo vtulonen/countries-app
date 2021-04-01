@@ -4,35 +4,64 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Question {
-    public Question(ArrayList<Country> options) {
-        setOptions(options);
-        setAnswer();
+
+    private Country asked;
+    private ArrayList<Country> optionsCountries;
+
+    public String askedCapital;
+    public String askedName;
+    public ArrayList<String> options = new ArrayList<>();
+
+    public Question(ArrayList<Country> optionsCountries) {
+        setOptionsCountries(optionsCountries);
+        setAsked();
+        setAskedCapital(asked);
+        setAskedName(asked);
+        setOptions();
     }
 
-    Country answer;
-    ArrayList<Country> options;
 
     // Get & set
-    public Country getAnswer() {
-        return answer;
+    private void setAsked() {
+        this.asked = optionsCountries.get(getRandomBetween(0,3)); // set random question from options
     }
 
-    public void setAnswer() {
-        this.answer = options.get(getRandomBetween(0,3)); // set random question from options
+    private void setOptionsCountries(ArrayList<Country> options) {
+        this.optionsCountries = options;
     }
 
-    public ArrayList<Country> getOptions() {
+    public String getAskedCapital() {
+        return askedCapital;
+    }
+
+    private void setAskedCapital(Country asked) {
+        this.askedCapital = asked.getCapital();
+    }
+
+    public String getAskedName() {
+        return askedName;
+    }
+
+    private void setAskedName(Country asked) {
+        this.askedName = asked.getName();
+    }
+
+    public ArrayList<String> getOptions() {
         return options;
     }
 
-    public void setOptions(ArrayList<Country> options) {
-        this.options = options;
+    private void setOptions() {
+       for ( Country country : optionsCountries) {
+            options.add(country.getCapital());
+       }
     }
 
     // Helper
-    public int getRandomBetween(int MIN, int MAX) {
+    private int getRandomBetween(int MIN, int MAX) {
         int random = new Random().nextInt((MAX - MIN) + 1) + MIN;
         return random;
     }
+
+
 
 }
