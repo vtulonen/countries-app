@@ -8,18 +8,21 @@ import java.util.ArrayList;
 public class Quiz {
 
     ArrayList<Question> questions = new ArrayList<>();
-    int score = 0;
-    int currentQuestionPos = 0;
-    boolean gameOver = false;
+    private int score = 0;
+    private int currentQuestionPos = 0;
+    private boolean gameOver = false;
+    private int mAmountOfQuestions;
     RoomDB database;
-    int mAmountOfQuestions;
 
     public Quiz(Context ctx, int amountOfQuestions, ArrayList<String> regions) {
         database = RoomDB.getInstance(ctx);
         mAmountOfQuestions = amountOfQuestions;
 
-        for (int i = 0; i < mAmountOfQuestions; i++) {
-            questions.add(generateQuestion(regions));
+        while (questions.size() < mAmountOfQuestions) {
+            Question newQuestion = generateQuestion(regions);
+            if(!containsQuestion(questions, newQuestion.getAskedName())) { // If the questions is not already in, add it
+                questions.add(newQuestion);
+            } // else loop again
         }
     }
 
@@ -28,14 +31,15 @@ public class Quiz {
 
         while (options.size() < 4) {
             Country randomCountry = database.countryDAO()
-                    .getRandom(regions.get(0), regions.get(1), regions.get(2), regions.get(3), regions.get(4));
-            if (!options.contains(randomCountry)) { // TODO: THIS IS NOT WORKING
+                .getRandom(regions.get(0), regions.get(1), regions.get(2), regions.get(3), regions.get(4));
+
+            // Check if options do not have the random country in the already
+            if (!containsCountry(options, randomCountry.getName())) {
                 options.add(randomCountry);
-            }
+            } // else loop again
         }
         Question question = new Question(options);
-        //Log.e("question", "What is the capital of " + question.getAskedName() + "?");
-        //Log.e("question", "Options: " + question.getOptions().toString());
+
         return question;
     }
 
@@ -74,4 +78,12 @@ public class Quiz {
     }
 
 
+    // Helpers
+    public boolean containsCountry(final ArrayList<Country> countries, final String name){
+        return countries.stream().anyMatch(country -> country.getName().equals(name));
+    }
+
+    public boolean containsQuestion(final ArrayList<Question> countries, final String name){
+        return countries.stream().anyMatch(country -> country.getAskedName().equals(name));
+    }
 }

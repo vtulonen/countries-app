@@ -98,6 +98,7 @@ public class QuizActivity extends AppCompatActivity {
         String btnText = clickedBtn.getText().toString();
         boolean isCorrect = checkAnswer(btnText);
 
+
         //Disable option buttons
         for (int i=0; i<buttons.size(); i++) {
             buttons.get(i).setEnabled(false);
@@ -131,7 +132,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public boolean checkAnswer(String answer) {
-        return answer == quiz.questions.get(mQnum).getAskedCapital();
+        return answer.equals(quiz.questions.get(mQnum).getAskedCapital());
     }
 
     public void resetButtons() {

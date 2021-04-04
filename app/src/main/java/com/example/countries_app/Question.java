@@ -8,9 +8,9 @@ public class Question {
     private Country asked;
     private ArrayList<Country> optionsCountries;
 
-    public String askedCapital;
-    public String askedName;
-    public ArrayList<String> options = new ArrayList<>();
+    private String askedCapital;
+    private String askedName;
+    private ArrayList<String> options = new ArrayList<>();
 
     public Question(ArrayList<Country> optionsCountries) {
         setOptionsCountries(optionsCountries);
