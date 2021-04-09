@@ -7,9 +7,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -64,7 +62,6 @@ public class QuizActivity extends AppCompatActivity {
 
         if (quiz.isGameOver()) {
             sendQuizNotification();
-            Log.v("game", "gameover, your score: " + quiz.getScore() + " / " + AMOUNT_OF_QUESTIONS);
             ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.container);
             //Hide all views in layout
             for (int i = 0; i < layout.getChildCount(); i++) {

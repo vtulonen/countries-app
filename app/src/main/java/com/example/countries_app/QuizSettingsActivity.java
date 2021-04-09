@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuizSettingsActivity extends AppCompatActivity {
 
@@ -29,10 +27,8 @@ public class QuizSettingsActivity extends AppCompatActivity {
         String cbText = cb.getText().toString();
         if (checked) {
             mSelectedRegions.add(cbText);
-            Log.v("cb", cbText);
         } else {
             mSelectedRegions.remove(cbText);
-            Log.v("cb", "remove " + cbText);
         }
 
         Button startButton = findViewById(R.id.btn_start);
@@ -45,9 +41,6 @@ public class QuizSettingsActivity extends AppCompatActivity {
 
 
     public void startQuiz(View view) {
-
-        Log.v("cb", mSelectedRegions.toString());
-
         Intent i = new Intent(this, QuizActivity.class);
         i.putExtra("regions", mSelectedRegions);
         startActivity(i);

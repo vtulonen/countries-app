@@ -64,9 +64,6 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
         MenuInflater inf = getMenuInflater();
         inf.inflate(R.menu.actionbar, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItem menuPresenter = menu.findItem(R.id.action_menu_presenter);
-
-
         SearchView sw = (SearchView) searchItem.getActionView();
         sw.setImeOptions(EditorInfo.IME_ACTION_DONE); // search icon to done icon
         sw.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI); // prevent landscape layout to take full height of the screen

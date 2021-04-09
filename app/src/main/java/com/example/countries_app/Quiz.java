@@ -1,7 +1,6 @@
 package com.example.countries_app;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -43,20 +42,16 @@ public class Quiz {
         return question;
     }
 
-
     //Getters
     public int getScore() {
         return score;
     }
-
     public boolean isGameOver() {
         return gameOver;
     }
-
     public ArrayList<Question> getQuestions() {
         return questions;
     }
-
     public int getCurrentQuestionPos() {
         return currentQuestionPos;
     }
@@ -72,11 +67,9 @@ public class Quiz {
     public void increaseScore() {
         this.score += 1;
     }
-
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
-
 
     // Helpers
     public boolean containsCountry(final ArrayList<Country> countries, final String name){

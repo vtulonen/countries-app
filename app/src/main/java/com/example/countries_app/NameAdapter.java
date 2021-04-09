@@ -1,7 +1,6 @@
 package com.example.countries_app;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameViewHolder> implements Filterable {
 
-    private List<String> names;
+    private final List<String> names;
     private final List<String> allNames;
 
     final private ListItemClickListener mOnClickListener;
@@ -33,6 +33,7 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
     }
 
 
+    @NonNull
     @Override
     public CountryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
@@ -40,9 +41,8 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
-        CountryNameViewHolder viewHolder = new CountryNameViewHolder(view);
 
-        return viewHolder;
+        return new CountryNameViewHolder(view);
     }
 
     @Override
@@ -75,12 +75,7 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
 
         @Override
         public void onClick(View view) {
-            // pos not needed?
-            int clickedPos = getAdapterPosition();
             String clickedCountryName = String.valueOf(listCountryNameView.getText());
-
-            Log.v("tw", String.valueOf(listCountryNameView.getText()));
-
             mOnClickListener.onListItemClick(clickedCountryName);
         }
     }
@@ -90,7 +85,7 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         return searchFilter;
     }
 
-    private Filter searchFilter = new Filter() {
+    private final Filter searchFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<String> filteredList = new ArrayList<>();
@@ -111,9 +106,10 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {
             names.clear();
-            names.addAll((List) results.values);
+            names.addAll((List<String>) results.values); // Unchecked cast but we know there are only strings in results so the warning can be suppressed
             notifyDataSetChanged();
         }
     };

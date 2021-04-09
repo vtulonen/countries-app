@@ -39,8 +39,6 @@ public class ViewCountryActivity extends AppCompatActivity {
         setTitle(countryName);
         setContentView(R.layout.activity_view_country);
         mCountry = database.countryDAO().getOne(countryName);
-        Log.v("flag", "flagurl: " + mCountry.getFlagUrl());
-
         mFlagImage = (ImageView) findViewById(R.id.iv_flag);
         SvgLoader.pluck()
                 .with(this)
@@ -54,10 +52,11 @@ public class ViewCountryActivity extends AppCompatActivity {
         mNativeName.setText(mCountry.getNativeName());
 
         mRegion = (TextView) findViewById(R.id.tv_region);
-        mRegion.setText(mCountry.getRegion() + ", " + mCountry.getSubregion());
+        String regionsText = mCountry.getRegion() + ", " + mCountry.getSubregion();
+        mRegion.setText(regionsText);
 
         mPopulation = (TextView) findViewById(R.id.tv_population);
-        mPopulation.setText(mCountry.getPopulation().toString());
+        mPopulation.setText(String.valueOf(mCountry.getPopulation()));
 
         List<String> currenciesList = mCountry.getCurrencies();
         String currenciesString = "";
