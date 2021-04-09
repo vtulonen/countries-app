@@ -36,7 +36,7 @@ public class Country implements Serializable {
     @ColumnInfo(name = "subregion")
     private String subregion;
 
-    // uulation
+    // Population
     @ColumnInfo(name = "population")
     private int population;
 
@@ -47,6 +47,14 @@ public class Country implements Serializable {
     // Currencies
     @ColumnInfo(name = "currencies")
     private List<String> currencies;
+
+    // Latitude & longitude
+    @ColumnInfo(name = "latlng")
+    private List<String> latlng;
+
+    //Area
+    @ColumnInfo(name = "area")
+    private int area;
 
     //Getters and setters
     public int getID() {
@@ -121,4 +129,12 @@ public class Country implements Serializable {
     public void setCurrencies(List<String> currencies) {
         this.currencies = currencies;
     }
+
+    public List<String> getLatlng() { return latlng; }
+
+    public void setLatlng(List<String> latlng) { this.latlng = latlng; }
+
+    public int getArea() { return area;  }
+
+    public void setArea(int area) { this.area = area; }
 }

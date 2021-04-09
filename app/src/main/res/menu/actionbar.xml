@@ -9,4 +9,12 @@
         app:actionViewClass="android.widget.SearchView">
 
     </item>
+
+    <item android:id="@+id/action_menu_presenter"
+        android:icon="@drawable/ic_menu_icon"
+        android:title="@string/menu_title"
+        app:showAsAction="ifRoom|collapseActionView"
+        >
+
+    </item>
 </menu>

@@ -13,17 +13,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -35,6 +30,7 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
 
     private static final String TAG = "BrowseCountriesActivity";
     RoomDB database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +56,15 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
     }
 
     /**
-     *
-     *  Create searchView in toolbar to filter countries
-     *
+     * Create searchView in toolbar to filter countries
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inf = getMenuInflater();
-        inf.inflate(R.menu.search_menu, menu);
+        inf.inflate(R.menu.actionbar, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem menuPresenter = menu.findItem(R.id.action_menu_presenter);
+
 
         SearchView sw = (SearchView) searchItem.getActionView();
         sw.setImeOptions(EditorInfo.IME_ACTION_DONE); // search icon to done icon
@@ -106,5 +102,11 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
         });
 
         return true;
+    }
+
+
+    public void openQuizSettings(MenuItem item) {
+        Intent i = new Intent(this, QuizSettingsActivity.class);
+        this.startActivity(i);
     }
 }

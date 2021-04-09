@@ -2,9 +2,13 @@ package com.example.countries_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +64,8 @@ public class ViewCountryActivity extends AppCompatActivity {
         for (String currency : currenciesList) {
             currenciesString += currency + "\n";
         }
+        currenciesString = currenciesString.trim();
+
 
         mCurrencies = (TextView) findViewById(R.id.tv_currencies);
         mCurrencies.setText(currenciesString);
@@ -71,4 +77,39 @@ public class ViewCountryActivity extends AppCompatActivity {
         SvgLoader.pluck().close();
     }
 
+    public void openMapsClick(View view) {
+        // TODO: open maps with longitude & latitude, also fetch them from api first
+
+
+        String coordinates =  String.join(",", mCountry.getLatlng());
+        int zoomLevel = getZoomLevel(mCountry.getArea());
+        Log.v("zoom", String.valueOf(zoomLevel));
+        Uri gmmIntentUri = Uri.parse("geo:" + coordinates + "?z=" + zoomLevel);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        try {
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            Log.e("error", "Can't open maps");
+        }
+    }
+
+    // Determine zoom level for maps uri based on country area size
+    private int getZoomLevel(final int area) {
+        int zoomLevel = 0;
+
+        if (area > 10000000) {
+            zoomLevel = 2;
+        } else if (area > 7000000) {
+            zoomLevel = 3;
+        } else if (area > 3000000) {
+            zoomLevel = 5;
+        } else if (area > 2000000) {
+            zoomLevel = 6;
+        } else {
+            zoomLevel = 7;
+        }
+
+        return zoomLevel;
+    }
 }

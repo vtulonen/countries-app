@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
 import com.example.countries_app.utilities.Converters;
 
 // db entities
-@Database(entities = {Country.class}, version = 5, exportSchema = false)
+@Database(entities = {Country.class}, version = 7, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class RoomDB extends RoomDatabase {
     // Db instance

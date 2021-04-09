@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         database = RoomDB.getInstance(this);
-
+        //database.countryDAO().deleteTable();
         Log.v("ts", String.valueOf(database.countryDAO().tableSize()));
         // Query api and populate db if db does not exist yet
         if (database.countryDAO().tableSize() == 0) {
             makeRestCountriesQuery(); // TODO: make this query timed? to check if data has changed
         }
-        sendFactNotification();
+       // sendFactNotification();
     }
 
     public void sendFactNotification() {
@@ -101,14 +101,20 @@ public class MainActivity extends AppCompatActivity {
                             String region = countryObj.getString("region");
                             String subregion = countryObj.getString("subregion");
                             String flagUrl = countryObj.getString("flag");
-                            int population = countryObj.getInt("population");
-                            Log.v("countryname", name);
+                            int population = countryObj.optInt("population", 0);
+                            int area = countryObj.optInt("area", 0);
 
                             JSONArray currenciesArr = countryObj.getJSONArray("currencies");
-                            List<String> currencies = new ArrayList<String>();
+                            List<String> currencies = new ArrayList<String>(1);
                             for (int j = 0; j < currenciesArr.length(); j++) {
                                 JSONObject curObj = currenciesArr.getJSONObject(j);
                                 currencies.add(curObj.getString("name"));
+                            }
+
+                            JSONArray latlngArr = countryObj.getJSONArray("latlng");
+                            List<String> latlng = new ArrayList<>(2);
+                            for (int k = 0; k <latlngArr.length() ; k++) {
+                                latlng.add(latlngArr.getString(k));
                             }
 
                             Country country = new Country();
@@ -120,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
                             country.setCapital(capital);
                             country.setPopulation(population);
                             country.setFlagUrl(flagUrl);
+                            country.setLatlng(latlng);
+
+
+                            country.setArea(area);
 
                             // Inset country to db
                             database.countryDAO().insert(country);
