@@ -1,3 +1,4 @@
+
 package com.example.countries_app;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,14 +10,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.PopupMenu;
+
 import android.widget.SearchView;
 
 import java.util.List;
@@ -109,4 +110,6 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
         Intent i = new Intent(this, QuizSettingsActivity.class);
         this.startActivity(i);
     }
+
+
 }

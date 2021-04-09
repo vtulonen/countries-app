@@ -2,7 +2,10 @@ package com.example.countries_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -60,6 +63,7 @@ public class QuizActivity extends AppCompatActivity {
     public void displayQuestion(View view) {
 
         if (quiz.isGameOver()) {
+            sendQuizNotification();
             Log.v("game", "gameover, your score: " + quiz.getScore() + " / " + AMOUNT_OF_QUESTIONS);
             ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.container);
             //Hide all views in layout
@@ -123,7 +127,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void onMenuBtnClick(View view) {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, BrowseCountriesActivity.class);
         startActivity(i);
     }
 
@@ -144,5 +148,23 @@ public class QuizActivity extends AppCompatActivity {
         nextBtn.setVisibility(View.VISIBLE);
     }
 
+    public void sendQuizNotification() {
+
+        Intent i = new Intent(this, QuizSettingsActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+        //PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, i, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "daily_fact")
+                .setSmallIcon(R.drawable.ic_search_icon)
+                .setContentTitle("Quiz Complete")
+                .setContentText("Click here for another!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(1, builder.build());
+    }
 
 }
