@@ -15,6 +15,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Quiz is displayed in this activity - creates a quiz based on user input from previous QuizSettingsActivity
+ * Contains the basic logic behind the quiz
+ */
 public class QuizActivity extends AppCompatActivity {
 
     ArrayList<String> mRegions;
@@ -26,6 +30,10 @@ public class QuizActivity extends AppCompatActivity {
     Button nextBtn;
     final int AMOUNT_OF_QUESTIONS = 10;
 
+    /**
+     * Creates quiz based on selected regions
+     * Creates array of buttons that will be populated with options in displayQuestion();
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +51,6 @@ public class QuizActivity extends AppCompatActivity {
             buttons.add(btn);
         }
 
-        nextBtn = findViewById(R.id.btn_next);
-
         mRegions = getIntent().getExtras().getStringArrayList("regions");
         // fill mRegions with placeholder text for database query to work
         while (mRegions.size() < MAX_REGIONS) {
@@ -54,10 +60,15 @@ public class QuizActivity extends AppCompatActivity {
         tw_question_value = findViewById(R.id.tw_question_value);
 
         quiz = new Quiz(this, AMOUNT_OF_QUESTIONS, mRegions);
-        nextBtn.performClick();
+
+        nextBtn = findViewById(R.id.btn_next);
+        nextBtn.performClick(); // displayQuestion (first)
 
     }
 
+    /**
+     * Basic game logic here -> track score, display next question, disable/enable option & next buttons, as well as display win text
+     */
     public void displayQuestion(View view) {
 
         if (quiz.isGameOver()) {
@@ -83,12 +94,12 @@ public class QuizActivity extends AppCompatActivity {
             List<String> options = quiz.questions.get(mQnum).getOptions();
             tw_question_value.setText(quiz.questions.get(mQnum).getAskedName());
             for (int i=0; i<buttons.size(); i++) {
-                buttons.get(i).setText(options.get(i));
-                buttons.get(i).setEnabled(true); // reset back
-                buttons.get(i).setBackgroundColor(getResources().getColor(R.color.orangepeel, null)); // reset
+                buttons.get(i).setText(options.get(i)); // populate buttontexts with options
+                buttons.get(i).setEnabled(true); // set back to enabled
+                buttons.get(i).setBackgroundColor(getResources().getColor(R.color.orangepeel, null)); // reset after last question changed color
             }
 
-            nextBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setVisibility(View.INVISIBLE); // hide next button until option is clicked
         }
 
     }
@@ -99,8 +110,7 @@ public class QuizActivity extends AppCompatActivity {
         String btnText = clickedBtn.getText().toString();
         boolean isCorrect = checkAnswer(btnText);
 
-
-        //Disable option buttons
+        //Disable option buttons after clicking one
         for (int i=0; i<buttons.size(); i++) {
             buttons.get(i).setEnabled(false);
             if (buttons.get(i).getText() == quiz.questions.get(mQnum).getAskedCapital()) {
@@ -115,7 +125,7 @@ public class QuizActivity extends AppCompatActivity {
             clickedBtn.setBackgroundColor(getResources().getColor(R.color.button_wrong, null ));
         }
 
-        quiz.increaseCurrentQuestionPos();
+        quiz.increaseCurrentQuestionPos(); // track next question
 
         //Show 'next' button
         nextBtn.setVisibility(View.VISIBLE);
@@ -123,12 +133,13 @@ public class QuizActivity extends AppCompatActivity {
         //Waiting user to press next to go continue
     }
 
-    public void onMenuBtnClick(View view) {
+
+    public void onMenuBtnClick(View view) { // Back to BrowseCountriesActivity after quiz done
         Intent i = new Intent(this, BrowseCountriesActivity.class);
         startActivity(i);
     }
 
-    public void onNewBtnClick(View view) {
+    public void onNewBtnClick(View view) { // Goes back to quizSettingsView
         onBackPressed();
     }
 
@@ -136,26 +147,18 @@ public class QuizActivity extends AppCompatActivity {
         return answer.equals(quiz.questions.get(mQnum).getAskedCapital());
     }
 
-    public void resetButtons() {
-        for (int i=0; i<buttons.size(); i++) {
-            buttons.get(i).setEnabled(true);
-            buttons.get(i).setBackgroundColor(getResources().getColor(R.color.orangepeel, null));
-        }
-
-        nextBtn.setVisibility(View.VISIBLE);
-    }
-
+    /**
+     * After quiz is complete send a notification congratulating user
+     */
     public void sendQuizNotification() {
-
         Intent i = new Intent(this, QuizSettingsActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
-        //PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "daily_fact")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "quiz_complete")
                 .setSmallIcon(R.drawable.ic_search_icon)
-                .setContentTitle("Quiz Complete")
-                .setContentText("Click here for another!")
+                .setContentTitle("Great! Quiz Complete")
+                .setContentText("Click here for a new round")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);

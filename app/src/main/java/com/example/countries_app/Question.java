@@ -3,21 +3,30 @@ package com.example.countries_app;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Country quiz spesific question class about capitals
+ * Creates a Question object from an array of Country objects
+ */
 public class Question {
 
     private Country asked;
     private ArrayList<Country> optionsCountries;
-
     private String askedCapital;
     private String askedName;
     private ArrayList<String> options = new ArrayList<>();
 
+    /**
+     * 4 countries passed as list are set as possible options
+     * 1 is randomly selected to be the answer
+     *
+     * @param optionsCountries list of countries included in the question
+     */
     public Question(ArrayList<Country> optionsCountries) {
         setOptionsCountries(optionsCountries);
         setAsked();
-        setAskedCapital(asked);
-        setAskedName(asked);
-        setOptions();
+        setAskedCapital(asked); // Capital of the asked country - used to check if user guessed correct
+        setAskedName(asked); // Name of the asked country - used to display to user when asking the question in quiz
+        setOptions(); // List of capitals of the countries provided as options - displayed to user in quiz
     }
 
 

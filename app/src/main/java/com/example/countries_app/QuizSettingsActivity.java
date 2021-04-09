@@ -10,6 +10,10 @@ import android.widget.CheckBox;
 
 import java.util.ArrayList;
 
+/**
+ * Displays different regions as checkboxes for user to define what to include in the quiz.
+ * Button to start the quiz by starting new QuizActivity
+ */
 public class QuizSettingsActivity extends AppCompatActivity {
 
     ArrayList<String> mSelectedRegions = new ArrayList<>();

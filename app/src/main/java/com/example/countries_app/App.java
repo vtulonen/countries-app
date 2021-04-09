@@ -19,44 +19,61 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base app class - onCreate is run when application starts
+ * Creates RoomDB instance and populates it with parsed data from api request
+ * Also creates a notification channel
+ */
+
 public class App extends Application {
     RoomDB database;
 
-    public static final String DAILY_FACT_ID = "daily_fact";
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
         database = RoomDB.getInstance(this);
-        //database.countryDAO().deleteTable();
-        Log.v("ts", String.valueOf(database.countryDAO().tableSize()));
+
         // Query api and populate db if db does not exist yet
-        if (database.countryDAO().tableSize() == 0) {
+        if (database.countryDAO().tableSize() == 0) { // TODO: button for user to update db with new api call
             makeRestCountriesQuery();
         }
     }
 
+    /**
+     *  Channel for notifications
+     */
+    public static final String NOTICATION_ID = "quiz_complete";
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(DAILY_FACT_ID, "Quiz Complete", importance);
+            NotificationChannel channel = new NotificationChannel(NOTICATION_ID, "Quiz Complete", importance);
             channel.setDescription("Notifies user for a completed quiz");
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
 
+    /**
+     *  Create a query with specified fields passed to buildUrl method
+     *  fetch the data from url with parseRequestQuery
+     */
     private void makeRestCountriesQuery() {
-        Log.v("click", "clicked");
         String[] fields = {}; // empty for all fields
         URL url =  NetworkUtility.buildUrl("all", fields);
-        Log.v("url", url.toString());
-        parseQuery(url.toString());
+        parseRequestQuery(url.toString());
     }
 
-    private void parseQuery(String url) {
+    /**
+     * Url request is passed to Volley -> MyRequestQue
+     * Response is parsed: country name, capital, nativeName, region, subregion, flagUrl, population, area, currencies and latitude & longitude
+     * Mentioned data is saved to a Country class object which is then saved to RoomDB using CountryDAO (data access object)
+     * @param url API url to fetch country data
+     *
+     */
+    private void parseRequestQuery(String url) {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
@@ -98,10 +115,7 @@ public class App extends Application {
 
                             // Inset country to db
                             database.countryDAO().insert(country);
-
                         }
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

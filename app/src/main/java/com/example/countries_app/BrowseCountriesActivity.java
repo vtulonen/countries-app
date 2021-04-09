@@ -22,14 +22,15 @@ import android.widget.SearchView;
 
 import java.util.List;
 
-
+/**
+ * "Main activity" of the application that displays all country names in a list (recylcerView)
+ * Includes onClick methods for clicking countries, search or starting a new quiz
+ */
 public class BrowseCountriesActivity extends AppCompatActivity implements NameAdapter.ListItemClickListener {
 
     RecyclerView mCountries;
     NameAdapter mAdapter;
     List<String> mCountryNameList;
-
-    private static final String TAG = "BrowseCountriesActivity";
     RoomDB database;
 
     @Override
@@ -39,8 +40,8 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
 
         database = RoomDB.getInstance(this);
 
+        // Names are fetched from RoomDB database
         mCountryNameList = database.countryDAO().getAllNames();
-
         mCountries = (RecyclerView) findViewById(R.id.rv_country_names);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mCountries.setLayoutManager(layoutManager);
@@ -49,6 +50,11 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
 
     }
 
+    /**
+     * Opens ViewCountryActivity that displays data about the clicked country
+     * @param clickedItemText text (country name) of the clicked item
+     * countryName is passed as extra to the new activity
+     */
     @Override
     public void onListItemClick(String clickedItemText) {
         Intent i = new Intent(this, ViewCountryActivity.class);
@@ -57,7 +63,7 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
     }
 
     /**
-     * Create searchView in toolbar to filter countries
+     * Create searchView in toolbar to filter countries, start a quiz
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

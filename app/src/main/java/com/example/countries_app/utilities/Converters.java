@@ -9,6 +9,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+/**
+ * TypeConverters for ROOM DB
+ */
 public class Converters {
     @TypeConverter
     public static List<String> fromString(String value) {

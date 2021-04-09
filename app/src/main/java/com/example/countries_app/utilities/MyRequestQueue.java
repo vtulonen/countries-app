@@ -6,6 +6,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * "Sigleton" instance of Volley request queue
+ */
 public class MyRequestQueue {
     private static MyRequestQueue instance;
     private RequestQueue requestQueue;

@@ -2,9 +2,8 @@ package com.example.countries_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ActivityNotFoundException;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ahmadrosid.svgloader.SvgLoader;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.example.countries_app.utilities.MyRequestQueue;
 
 import java.util.List;
 
+/**
+ * Displayed data stored in roomDB of a given country
+ * Button to show country on Maps
+ * Finds the country from roomDB based on country name (putExtra from BrowseCountriesActivity onClick)
+ */
 public class ViewCountryActivity extends AppCompatActivity {
 
     RoomDB database;
@@ -31,6 +31,9 @@ public class ViewCountryActivity extends AppCompatActivity {
     TextView mPopulation;
     TextView mCurrencies;
 
+    /**
+     * Get country from database and populate textviews and image view with the country's data
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         database = RoomDB.getInstance(this);
@@ -40,6 +43,9 @@ public class ViewCountryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_country);
         mCountry = database.countryDAO().getOne(countryName);
         mFlagImage = (ImageView) findViewById(R.id.iv_flag);
+        /**
+         * SvgLoader library used to display and svg image from url
+         */
         SvgLoader.pluck()
                 .with(this)
                 //.setPlaceHolder(R.mipmap.ic_launcher, R.mipmap.ic_launcher)
@@ -76,20 +82,21 @@ public class ViewCountryActivity extends AppCompatActivity {
         SvgLoader.pluck().close();
     }
 
+    /**
+     * Use country's latitude and longitude to construct gmmIntentUri for google Maps
+     * Determine zoomLevel based on country's area
+     * Open Google Maps with intent
+     */
     public void openMapsClick(View view) {
-        // TODO: open maps with longitude & latitude, also fetch them from api first
-
-
         String coordinates =  String.join(",", mCountry.getLatlng());
         int zoomLevel = getZoomLevel(mCountry.getArea());
-        Log.v("zoom", String.valueOf(zoomLevel));
-        Uri gmmIntentUri = Uri.parse("geo:" + coordinates + "?z=" + zoomLevel);
+        Uri gmmIntentUri = Uri.parse("geo:" + coordinates + "?z=" + zoomLevel); // determines the location and zoom lvl where maps is opened at
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         try {
             startActivity(mapIntent);
         } catch (Exception e) {
-            Log.e("error", "Can't open maps");
+            Log.e("error", "Can't open Google Maps");
         }
     }
 

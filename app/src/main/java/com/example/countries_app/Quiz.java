@@ -4,13 +4,21 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+/**
+ * Quiz class that creates questions from random countries queried from RoomDB
+ * Keeps track of -
+ *      -users current score,
+ *      -generated questions
+ *      -question position,
+ *      -if the game is over
+ *      to help with creating "game logic" in QuizActivity
+ */
 public class Quiz {
-
     ArrayList<Question> questions = new ArrayList<>();
     private int score = 0;
     private int currentQuestionPos = 0;
     private boolean gameOver = false;
-    private int mAmountOfQuestions;
+    private final int mAmountOfQuestions;
     RoomDB database;
 
     public Quiz(Context ctx, int amountOfQuestions, ArrayList<String> regions) {
@@ -25,6 +33,12 @@ public class Quiz {
         }
     }
 
+    /**
+     *
+     * @param regions user selected regions included in the quiz
+     *                - used by countryDAO to determine which regions to include in random query of a country
+     * @return Question object
+     */
     public Question generateQuestion(ArrayList<String> regions) {
         ArrayList<Country> options = new ArrayList<Country>();
 
@@ -71,7 +85,7 @@ public class Quiz {
         this.gameOver = gameOver;
     }
 
-    // Helpers
+    // Helpers to make sure no duplicates are added to the quiz
     public boolean containsCountry(final ArrayList<Country> countries, final String name){
         return countries.stream().anyMatch(country -> country.getName().equals(name));
     }

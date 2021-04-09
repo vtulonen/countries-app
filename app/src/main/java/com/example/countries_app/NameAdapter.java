@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for RecyclerView
+ */
 public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameViewHolder> implements Filterable {
 
     private final List<String> names;
@@ -21,11 +24,12 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
 
     final private ListItemClickListener mOnClickListener;
 
+    // Inteface recieves onClicks
     public interface ListItemClickListener {
         void onListItemClick(String clickedItemIndex);
-
     }
 
+    // Adapter that recieves names and adds above listener to the name
     public NameAdapter(List<String> names, ListItemClickListener listener) {
         this.names = new ArrayList<>(names);
         this.allNames = new ArrayList<>(names); //
@@ -33,6 +37,9 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
     }
 
 
+    /**
+     * @return viewHolder for each countryname
+     */
     @NonNull
     @Override
     public CountryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -45,30 +52,35 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         return new CountryNameViewHolder(view);
     }
 
+    /**
+     * update the contents of the ViewHolder to display the name,
+     * with help of the provided position
+     */
     @Override
     public void onBindViewHolder(CountryNameViewHolder holder, int position) {
         holder.bind(names.get(position));
     }
 
+    /**
+     * @return size of displayed items
+     */
     @Override
     public int getItemCount() {
-
         return names.size();
     }
 
     class CountryNameViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        // Will display the position in the list, ie 0 through getItemCount() - 1
         TextView listCountryNameView;
 
         public CountryNameViewHolder(View itemView) {
             super(itemView);
-
             listCountryNameView = (TextView) itemView.findViewById(R.id.tv_item_countryName);
             itemView.setOnClickListener(this);
         }
 
-
+        /**
+         * helper method to bind the name to the view with onBindViewHolder
+         */
         void bind(String name) {
             listCountryNameView.setText(name);
         }
@@ -80,6 +92,9 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         }
     }
 
+    /**
+     * @return Filter that's used by nameAdapter to display names based on user input
+     */
     @Override
     public Filter getFilter() {
         return searchFilter;
@@ -89,13 +104,13 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<String> filteredList = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
+            if (constraint == null || constraint.length() == 0) { // If searchfield is empty, we display the all names
                 filteredList.addAll(allNames);
-            } else {
+            } else {                                              // else we use regex to filter all names based on input (constraint param)
                 // regex string to match everything starting with the constraint
                 String searchRegex = constraint.toString().toLowerCase().trim() + "(.*)";
                 for (String name : allNames) {
-                    if (name.toLowerCase().matches(searchRegex)) {
+                    if (name.toLowerCase().matches(searchRegex)) { // compare to each name in allNames and add to filteredList if matched
                         filteredList.add(name);
                     }
                 }
@@ -105,6 +120,11 @@ public class NameAdapter extends RecyclerView.Adapter<NameAdapter.CountryNameVie
             return results;
         }
 
+        /**
+         *  After perfomFiltering returns, we publish results by
+         *  clearing existing names and add the filtered ones
+         *  to update recyclerView we call notifyDataSetChanged();
+         */
         @Override
         @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {

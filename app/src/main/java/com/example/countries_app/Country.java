@@ -7,6 +7,10 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ *  RoomDB
+ *  Table entity to store Country objects
+ */
 //Table name
 @Entity(tableName = "countries")
 public class Country implements Serializable {

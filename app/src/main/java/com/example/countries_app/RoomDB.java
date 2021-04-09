@@ -10,6 +10,12 @@ import androidx.room.TypeConverters;
 
 import com.example.countries_app.utilities.Converters;
 
+/**
+ * RoomDB used to store country data
+ * database is static so it won't be created for every new instance
+ * getInstance is static + synchronized to prevent simultaneous write/read to db
+ */
+
 // db entities
 @Database(entities = {Country.class}, version = 7, exportSchema = false)
 @TypeConverters({Converters.class})

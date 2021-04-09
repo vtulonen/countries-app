@@ -5,11 +5,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
+/**
+ * Data Access Objects - methods to access RoomDB countries table with SQLIte queries
+ */
 @Dao
 public interface CountryDAO {
     // query
