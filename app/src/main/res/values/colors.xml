@@ -19,6 +19,8 @@
     <!-- Buttons -->
     <color name="button_primary_bg">@color/liver</color>
     <color name="button_primary_text">@color/ivory</color>
+    <color name="button_correct">#339900</color>
+    <color name="button_wrong">#cc3300</color>
 
     <color name="main_bg">#E8DCD9</color>
 

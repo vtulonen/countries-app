@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_quiz_start"
+        android:onClick="openQuizSettings"
+        android:title="@string/action_quiz"
+        app:showAsAction="ifRoom">
+
+    </item>
+
     <item android:id="@+id/action_search"
         android:icon="@drawable/ic_search_icon"
         android:title="@string/search_menu_title"
@@ -10,11 +17,5 @@
 
     </item>
 
-    <item android:id="@+id/action_menu_presenter"
-        android:icon="@drawable/ic_menu_icon"
-        android:title="@string/menu_title"
-        app:showAsAction="ifRoom|collapseActionView"
-        >
 
-    </item>
 </menu>
