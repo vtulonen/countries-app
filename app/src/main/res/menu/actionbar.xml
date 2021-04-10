@@ -2,11 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_update"
+        android:onClick="onUpdateClick"
+        android:title="@string/action_update"
+        app:showAsAction="ifRoom">
+    </item>
+
     <item android:id="@+id/action_quiz_start"
         android:onClick="openQuizSettings"
         android:title="@string/action_quiz"
         app:showAsAction="ifRoom">
-
     </item>
 
     <item android:id="@+id/action_search"
@@ -14,7 +19,6 @@
         android:title="@string/search_menu_title"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView">
-
     </item>
 
 

@@ -141,4 +141,6 @@ public class Country implements Serializable {
     public int getArea() { return area;  }
 
     public void setArea(int area) { this.area = area; }
+
+
 }

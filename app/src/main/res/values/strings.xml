@@ -28,4 +28,7 @@
     <string name="btn_view_location_on_maps">View location on maps</string>
     <string name="menu_title">Menu</string>
     <string name="action_quiz">QUIZ</string>
+    <string name="action_update">UPDATE</string>
+    <string name="btn_no">NO</string>
+    <string name="btn_yes">YES</string>
 </resources>
