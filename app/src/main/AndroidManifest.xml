@@ -12,13 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Countries_app">
-        <activity android:name=".QuizActivity" />
-        <activity android:name=".QuizSettingsActivity" />
+        <activity
+            android:name=".QuizActivity"
+            android:configChanges="screenLayout|orientation|screenSize"
+            />
+        <activity
+            android:name=".QuizSettingsActivity"
+            android:configChanges="screenLayout|orientation|screenSize" />
         <activity android:name=".ViewCountryActivity" />
         <activity
             android:name=".BrowseCountriesActivity"
             android:configChanges="screenLayout|orientation|screenSize"
             android:label="@string/browse_title">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

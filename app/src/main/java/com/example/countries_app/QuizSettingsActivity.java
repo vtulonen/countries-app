@@ -21,6 +21,7 @@ public class QuizSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getString(R.string.select_regions));
         setContentView(R.layout.activity_quiz_settings);
     }
 

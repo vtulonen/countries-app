@@ -58,7 +58,7 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
         mCtx = this;
         database = RoomDB.getInstance(this);
 
-        if (database.countryDAO().tableSize() == 0) { // TODO: button for user to update db with new api call
+        if (database.countryDAO().tableSize() == 0) {
             makeRestCountriesQuery();
         } else {
             setUpRecyclerView();
@@ -140,7 +140,6 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
                         Intent intent = getIntent();
                         finish();
                         startActivity(intent);
-                        // todo: restart app for update to take effect
                     }
                 })
 
@@ -169,19 +168,25 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
     /**
      *  Create a query with specified fields passed to buildUrl method
      *  fetch the data from url with parseRequestQuery
+     *  callback onSuccess after query completes to display fetched data
      */
     private void makeRestCountriesQuery() {
-        String[] fields = {}; // empty for all fields
+        String[] fields = {}; // leave empty for all fields
         URL url =  NetworkUtility.buildUrl("all", fields);
         parseRequestQuery(new VolleyCallBack() {
             @Override
             public void onSuccess() {
-                Log.v("res", "onSuccess");
                setUpRecyclerView();
             }
         }, url.toString());
     }
 
+    /**
+     * Callback interface for volley request - cb function defined when calling parseRequestQuery
+     */
+    public interface VolleyCallBack {
+        void onSuccess();
+    }
 
 
     /**
@@ -243,9 +248,5 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
             Log.e("err", error.getMessage());
         });
         MyRequestQueue.getInstance(this).addToRequestQueue(request);
-    }
-
-    public interface VolleyCallBack {
-        void onSuccess();
     }
 }

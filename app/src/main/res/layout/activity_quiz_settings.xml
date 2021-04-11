@@ -1,69 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".QuizSettingsActivity">
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <TextView
-        android:id="@+id/tw_quiz_settings_title"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/select_regions"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="244dp"
-        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btn_start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.254">
+        tools:context=".QuizSettingsActivity">
+
+        <CheckBox
+            android:id="@+id/cb_africa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="22dp"
+            android:minWidth="150dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/region_africa"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/cb_europe"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/cb_asia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minWidth="150dp"
+            android:onClick="onCheckboxClicked"
+            android:text="@string/region_asia"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/cb_americas"
+            app:layout_constraintTop_toBottomOf="@+id/cb_americas" />
 
         <CheckBox
             android:id="@+id/cb_americas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="22dp"
             android:minWidth="150dp"
             android:onClick="onCheckboxClicked"
             android:text="@string/region_americas"
             android:textSize="24sp"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="445dp" />
-
-        <CheckBox
-            android:id="@+id/cb_oceania"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="150dp"
-            android:onClick="onCheckboxClicked"
-            android:text="@string/region_oceania"
-            android:textSize="24sp"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="541dp" />
+            app:layout_constraintEnd_toStartOf="@+id/cb_oceania"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cb_africa" />
 
         <CheckBox
             android:id="@+id/cb_europe"
@@ -73,47 +67,40 @@
             android:onClick="onCheckboxClicked"
             android:text="@string/region_europe"
             android:textSize="24sp"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="589dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cb_africa"
+            app:layout_constraintTop_toTopOf="@+id/cb_africa" />
 
         <CheckBox
-            android:id="@+id/cb_africa"
+            android:id="@+id/cb_oceania"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:minWidth="150dp"
             android:onClick="onCheckboxClicked"
-            android:text="@string/region_africa"
+            android:text="@string/region_oceania"
             android:textSize="24sp"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="397dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cb_americas"
+            app:layout_constraintTop_toBottomOf="@+id/cb_europe" />
 
-        <CheckBox
-            android:id="@+id/cb_asia"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minWidth="150dp"
-            android:onClick="onCheckboxClicked"
-            android:text="@string/region_asia"
-            android:textSize="24sp"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="493dp" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:onClick="startQuiz"
-        android:padding="32dp"
-        android:text="@string/btn_start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible">
+            android:layout_marginBottom="4dp"
+            android:onClick="startQuiz"
+            android:padding="32dp"
+            android:text="@string/btn_start"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
 
-    </Button>
+        </Button>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+</ScrollView>

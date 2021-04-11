@@ -11,7 +11,7 @@
     <string name="button_quiz">TAKE A QUIZ</string>
     <string name="search_menu_title">Search</string>
     <string name="browse_title">Browse Countries</string>
-    <string name="select_regions">Select regions</string>
+    <string name="select_regions">Select Regions for Capital Quiz</string>
 
     <string name="region_africa">Africa</string>
     <string name="region_americas">Americas</string>

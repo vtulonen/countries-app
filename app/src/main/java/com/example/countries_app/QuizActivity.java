@@ -23,7 +23,7 @@ public class QuizActivity extends AppCompatActivity {
 
     ArrayList<String> mRegions;
     final int MAX_REGIONS = 5;
-    int mQnum;
+    int mQnum = 0;
     TextView tw_question_value;
     List<Button> buttons;
     Quiz quiz;
@@ -58,7 +58,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         tw_question_value = findViewById(R.id.tw_question_value);
-
+        this.setTitle("Question " + (mQnum + 1) + "/" + AMOUNT_OF_QUESTIONS);
         quiz = new Quiz(this, AMOUNT_OF_QUESTIONS, mRegions);
 
         nextBtn = findViewById(R.id.btn_next);
@@ -72,6 +72,7 @@ public class QuizActivity extends AppCompatActivity {
     public void displayQuestion(View view) {
 
         if (quiz.isGameOver()) {
+            this.setTitle("Quiz Complete");
             sendQuizNotification();
             ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.container);
             //Hide all views in layout
@@ -90,7 +91,9 @@ public class QuizActivity extends AppCompatActivity {
 
 
         } else {
+
             mQnum = quiz.getCurrentQuestionPos();
+            this.setTitle("Question " + (mQnum + 1) + "/" + AMOUNT_OF_QUESTIONS);
             List<String> options = quiz.questions.get(mQnum).getOptions();
             tw_question_value.setText(quiz.questions.get(mQnum).getAskedName());
             for (int i=0; i<buttons.size(); i++) {
