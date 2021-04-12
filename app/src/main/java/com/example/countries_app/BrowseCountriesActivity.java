@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.android.volley.Request;
@@ -43,12 +44,13 @@ import java.util.List;
  */
 public class BrowseCountriesActivity extends AppCompatActivity implements NameAdapter.ListItemClickListener {
 
-    RecyclerView mCountries;
-    NameAdapter mAdapter;
-    List<String> mCountryNameList;
-    RoomDB database;
-    NameAdapter.ListItemClickListener mClickListener;
-    Context mCtx;
+    private RecyclerView mCountries;
+    private NameAdapter mAdapter;
+    private List<String> mCountryNameList;
+    private RoomDB database;
+    private NameAdapter.ListItemClickListener mClickListener;
+    private Context mCtx;
+    private ProgressBar mLoadingPB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +59,13 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
         mClickListener = this;
         mCtx = this;
         database = RoomDB.getInstance(this);
+        mLoadingPB = (ProgressBar) findViewById(R.id.pb_loading);
 
         if (database.countryDAO().tableSize() == 0) {
             makeRestCountriesQuery();
         } else {
             setUpRecyclerView();
         }
-
     }
 
     /**
@@ -133,7 +135,7 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
     public void onUpdateClick(MenuItem item) {
         new AlertDialog.Builder(this)
                 .setTitle("Update Countries")
-                .setMessage("Are you sure you want to update? This will restart the app.")
+                .setMessage("Would you like to update the countries with latest data?")
                 .setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         database.countryDAO().deleteTable();
@@ -171,12 +173,14 @@ public class BrowseCountriesActivity extends AppCompatActivity implements NameAd
      *  callback onSuccess after query completes to display fetched data
      */
     private void makeRestCountriesQuery() {
+        mLoadingPB.setVisibility(View.VISIBLE);
         String[] fields = {}; // leave empty for all fields
         URL url =  NetworkUtility.buildUrl("all", fields);
         parseRequestQuery(new VolleyCallBack() {
             @Override
             public void onSuccess() {
-               setUpRecyclerView();
+                mLoadingPB.setVisibility(View.INVISIBLE);
+                setUpRecyclerView();
             }
         }, url.toString());
     }

@@ -9,7 +9,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_country_names"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_country_names"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rv_country_names"
+        app:layout_constraintTop_toTopOf="@+id/rv_country_names" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
